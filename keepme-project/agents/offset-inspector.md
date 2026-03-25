@@ -1,6 +1,7 @@
 ---
 name: offset-inspector
-description: Use BEFORE any Debezium connector offset rewrite operation to validate the stored offset value. Trigger phrases: "rewrite offset", "fix offset", "offset key", "connector offset", "check stored offset".
+description: Use PROACTIVELY BEFORE any Debezium connector offset rewrite operation to validate the stored offset value. Trigger phrases: "rewrite offset", "fix offset", "offset key", "connector offset", "check stored offset".
+model: haiku
 tools: Bash
 ---
 

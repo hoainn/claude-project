@@ -1,6 +1,7 @@
 ---
 name: connector-inspector
 description: Use when checking connector health, diagnosing failures, or investigating why a connector is in FAILED/PAUSED state. Trigger phrases: "check connector status", "why is connector failing", "connector error", "check connector logs", "connector task failed".
+model: haiku
 tools: Bash, Grep
 ---
 

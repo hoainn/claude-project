@@ -1,6 +1,7 @@
 ---
 name: s3-ops
 description: Use for S3 operations on the KeepMe data warehouse — clearing a connector prefix, listing partitions, checking if files exist, counting objects. Trigger phrases: "clear S3", "delete S3", "clean S3", "check S3", "list S3 partitions".
+model: sonnet
 tools: Bash
 ---
 

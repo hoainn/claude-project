@@ -1,6 +1,7 @@
 ---
 name: schema-auditor
 description: Use when comparing fields across schema JSON, Glue table, and Redshift view for a collection. Trigger phrases: "check fields missing", "compare schema", "what's missing in glue", "schema audit", "fields in sync".
+model: haiku
 tools: Bash, Read, Glob, Grep
 ---
 

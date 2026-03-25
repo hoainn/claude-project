@@ -1,6 +1,7 @@
 ---
 name: code-reviewer
 description: Use for reviewing code changes — security vulnerabilities, Laravel/React patterns, missing validation, auth issues. Trigger phrases: "review this", "check this code", "security review", "code review".
+model: haiku
 tools: Read, Glob, Grep
 ---
 

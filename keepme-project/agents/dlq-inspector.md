@@ -1,6 +1,7 @@
 ---
 name: dlq-inspector
 description: Use when checking dead letter queue errors or planning DLQ replay. Trigger phrases: "check DLQ", "dlq errors", "messages failing", "replay DLQ", "what's in the dead letter queue".
+model: haiku
 tools: Bash
 ---
 

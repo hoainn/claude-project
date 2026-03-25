@@ -1,6 +1,7 @@
 ---
 name: data-engineer
 description: Use for data pipeline tasks — Kafka Connect config, Schema Registry inspection, Glue schema fixes, Redshift Spectrum queries, partition registration, type conflict analysis. Trigger phrases: "check schema registry", "fix glue", "register partitions", "redshift query", "connector config".
+model: sonnet
 tools: Bash, Read, Write, Edit, Glob, Grep
 ---
 

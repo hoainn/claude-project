@@ -1,6 +1,7 @@
 ---
 name: terraform
 description: Use for Terraform infrastructure tasks — writing/modifying IaC, planning changes, reviewing modules, fixing drift. Trigger phrases: "terraform", "update infra", "add EKS module", "IAM policy", "VPC change", "infrastructure change".
+model: sonnet
 tools: Read, Write, Edit, Glob, Grep, Bash
 ---
 
