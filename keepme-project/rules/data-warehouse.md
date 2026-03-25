@@ -57,5 +57,21 @@ When rewriting a connector offset key, always inspect the stored offset **value*
 ## Duplicate data in Parquet (S3)
 - Re-snapshots append new Parquet files alongside old ones — S3 sink never overwrites
 - Fix options:
-  1. Deduplicate in Redshift view: `ROW_NUMBER() OVER (PARTITION BY _id ORDER BY __ts_ms DESC NULLS LAST)`
+  1. Deduplicate in Redshift view (see pattern below)
   2. Clear S3 prefix + reset sink to re-process topic from offset 0 (clean but destructive)
+
+## Deduplication in Redshift views (Spectrum + datashare)
+- `ROW_NUMBER() OVER (PARTITION BY _id ...)` FAILS on Spectrum external tables accessed via datashare
+  - Error: `A subquery that refers to a nested table cannot contain WINDOW operation`
+- Use `INNER JOIN MAX(__ts_ms) GROUP BY _id` instead — Spectrum-compatible, same semantics:
+  ```sql
+  FROM cdc_raw.<table> v
+  INNER JOIN (
+    SELECT _id, MAX(__ts_ms) AS max_ts
+    FROM cdc_raw.<table>
+    WHERE __op != 'd'
+    GROUP BY _id
+  ) latest ON v._id = latest._id AND v.__ts_ms = latest.max_ts
+  WHERE v.__op != 'd'
+  ```
+- Always update views in the `keep-me` database — NOT `dev` (dev's cdc_raw points to non-existent cdc_keepme_development)
