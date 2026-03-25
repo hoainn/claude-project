@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(aws redshift-data:*)",
+      "Bash(aws redshift-serverless:*)",
+      "Bash(aws redshift:*)",
+      "Bash(aws glue:*)",
+      "Bash(aws s3:*)",
+      "Bash(aws s3api:*)",
+      "Bash(aws sts:*)",
+      "Bash(aws eks:*)",
+      "Bash(kubectl get:*)",
+      "Bash(kubectl describe:*)",
+      "Bash(kubectl logs:*)",
+      "Bash(kubectl exec:*)",
+      "Bash(kubectl scale:*)",
+      "Bash(kubectl apply:*)",
+      "Bash(kubectl port-forward:*)",
+      "Bash(curl -s http://10.200.95.52:8081*)",
+      "Bash(python3:*)",
+      "Bash(git status:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git add:*)",
+      "Bash(git pull:*)",
+      "Bash(npm run:*)",
+      "Bash(docker-compose:*)",
+      "Bash(docker compose:*)"
+    ]
+  },
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "SKILLS_DIR=\"$(dirname \"$CLAUDE_CONFIG_DIR\")/skills/claude-scientific-skills\"; if [ -d \"$SKILLS_DIR/.git\" ]; then git -C \"$SKILLS_DIR\" pull --quiet 2>/dev/null; else git clone https://github.com/K-Dense-AI/claude-scientific-skills.git \"$SKILLS_DIR\" --quiet 2>/dev/null; fi"
+          }
+        ]
+      }
+    ]
+  }
+}
