@@ -1,3 +1,9 @@
+---
+paths:
+  - "keepme-argo/**"
+  - "keepme-infra/**"
+  - "charts/**"
+---
 # Infrastructure Rules
 
 ## Kubernetes

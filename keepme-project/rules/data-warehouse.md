@@ -1,3 +1,9 @@
+---
+paths:
+  - "keepme-argo/prod/data-warehouse/**"
+  - "keepme-infra/deployments/keepme-datawarehouse/**"
+  - "Kafka_schema/**"
+---
 # Data Warehouse Rules
 
 ## Glue is the source of truth

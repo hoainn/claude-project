@@ -1,3 +1,12 @@
+---
+paths:
+  - "keepme-react-v4/**"
+  - "keepme-v4/**"
+  - "keepme-services/**"
+  - "keepme/**"
+  - "antares-project/**"
+  - "antares-playwrite-service/**"
+---
 # Code Style Rules
 
 ## Backend (keepme-v4 — Laravel 12, PHP 8.3)
