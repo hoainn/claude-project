@@ -1,28 +1,17 @@
-# Sync ArgoCD
+---
+description: Trigger ArgoCD refresh after a git push to keepme-argo
+argument-hint: <app-name>
+---
 
-Trigger an ArgoCD refresh for one or more applications after a git push.
+## App: $ARGUMENTS
 
-## Usage
-`/project:sync-argocd <app-name>`
+## Recent keepme-argo commits
+!`cd keepme-argo 2>/dev/null && git log --oneline -3`
 
-Example: `/project:sync-argocd prod-dw-connector-source-redis-jobs`
+## Current ArgoCD app status
+!`kubectl get application $ARGUMENTS -n argocd -o jsonpath='{.status.sync.status}/{.status.health.status}' 2>/dev/null`
 
-## Steps
-
-1. Trigger refresh:
-   ```bash
-   kubectl annotate application <app-name> -n argocd argocd.argoproj.io/refresh=normal --overwrite
-   ```
-2. Watch pod status:
-   ```bash
-   kubectl get pods -n data-warehouse-prod | grep <name>
-   ```
-
-## Common app names
-- `prod-dw-connector-source-<name>`
-- `prod-dw-connector-sink-<name>`
-- `prod-data-warehouse-kafka`
-
-## Notes
-- Always run this immediately after every `git push` to keepme-argo
-- Do not rely on ArgoCD auto-sync alone — trigger manually to avoid delays
+Trigger ArgoCD sync for `$ARGUMENTS` and watch until healthy:
+```bash
+kubectl annotate application $ARGUMENTS -n argocd argocd.argoproj.io/refresh=normal --overwrite
+```

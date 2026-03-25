@@ -1,19 +1,21 @@
-# Deploy to Environment
+---
+description: Deploy a service to dev/staging/prod via ArgoCD GitOps
+argument-hint: <service> <environment>
+---
 
-Deploy a service to the specified environment (dev/staging/prod) via ArgoCD GitOps.
+## Deploy: $ARGUMENTS
 
-## Usage
-`/project:deploy <service> <environment>`
+## Current branch & uncommitted changes
+!`git branch --show-current && git status --short`
 
-## Steps
+## Recent commits
+!`git log --oneline -5`
 
-1. Check current branch and ensure changes are committed
-2. Identify the Helm chart in `charts/<service>/` or `keepme-infra/charts/`
-3. Update the image tag or values in the appropriate ArgoCD app under `keepme-argo/<environment>/`
-4. Commit and push — ArgoCD auto-syncs (15 retry attempts with exponential backoff)
-5. Monitor rollout: `kubectl rollout status deployment/<service> -n <namespace>`
+## Target ArgoCD apps
+!`kubectl get application -n argocd 2>/dev/null | grep "$(echo "$ARGUMENTS" | awk '{print $1}')" | head -5`
 
-## Environments
-- `dev` — `keepme-argo/dev/`
-- `staging` — `keepme-argo/staging/`
-- `prod` — `keepme-argo/prod/`
+Deploy `$ARGUMENTS` following GitOps:
+1. Confirm branch is clean and changes are committed
+2. Update image tag or values in `keepme-argo/$(echo "$ARGUMENTS" | awk '{print $2}')/`
+3. Commit and push to keepme-argo
+4. Trigger ArgoCD sync and monitor rollout

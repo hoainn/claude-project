@@ -1,15 +1,17 @@
-# Code Review
+---
+description: Review current branch changes for quality, security, and correctness
+---
 
-Review staged or changed code for quality, security, and correctness.
+## Changed files
+!`git diff --name-only main...HEAD 2>/dev/null || git diff --name-only HEAD~1...HEAD`
 
-## Usage
-`/project:review`
+## Full diff
+!`git diff main...HEAD 2>/dev/null || git diff HEAD~1...HEAD`
 
-## Steps
+Review the above changes for:
+1. Security vulnerabilities (OWASP top 10, secrets, SQL injection, XSS)
+2. Code pattern adherence (Action pattern, Repository pattern, ServiceResult<T>)
+3. Missing test coverage for new logic
+4. Performance concerns
 
-1. Run `git diff` to see all changes
-2. Check for security issues (OWASP top 10, secrets, SQL injection, XSS)
-3. Check for Snyk-reportable vulnerabilities in new dependencies
-4. Verify code follows existing patterns (Action pattern, Repository pattern, ServiceResult<T>)
-5. Check test coverage for new logic
-6. Summarize findings with severity: critical / warning / suggestion
+Give specific, actionable feedback per file. Severity: **critical** / **warning** / **suggestion**.

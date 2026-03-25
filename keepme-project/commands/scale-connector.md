@@ -1,25 +1,22 @@
-# Scale Connector
+---
+description: Scale a Kafka Connect connector up or down via GitOps
+argument-hint: <connector-name> <up|down>
+---
 
-Scale a Kafka Connect connector up or down via ArgoCD GitOps.
+## Connector: $ARGUMENTS
 
-## Usage
-`/project:scale-connector <connector-name> <up|down>`
+## Current pod status
+!`kubectl get pods -n data-warehouse-prod | grep "$(echo "$ARGUMENTS" | awk '{print $1}')" 2>/dev/null`
 
-Example: `/project:scale-connector redis-jobs down`
+## Current source values.yaml
+!`cat keepme-argo/prod/data-warehouse/kafka-connect-connectors/source-$(echo "$ARGUMENTS" | awk '{print $1}')/values.yaml 2>/dev/null`
 
-## Steps
+Scale the connector. Steps:
+1. Set `replicaCount: 0` (down) or `replicaCount: 1` (up) in values.yaml — never set `enabled: false`
+2. Commit and push to keepme-argo
+3. Trigger ArgoCD sync for both source and sink apps
+4. Watch pod status until change takes effect
 
-1. Locate the connector values file in `keepme-argo/prod/data-warehouse/<connector-name>/`
-2. Set `replicaCount: 0` (down) or `replicaCount: 1` (up) — never set `enabled: false`
-3. Commit and push to keepme-argo
-4. Trigger ArgoCD sync:
-   ```bash
-   kubectl annotate application prod-dw-connector-source-<name> -n argocd argocd.argoproj.io/refresh=normal --overwrite
-   kubectl annotate application prod-dw-connector-sink-<name> -n argocd argocd.argoproj.io/refresh=normal --overwrite
-   ```
-5. Watch pod status: `kubectl get pods -n data-warehouse-prod | grep <name>`
-
-## Notes
+Notes:
 - Scale down **both** source and sink before any connector reset
-- Scale up **source only** after reset — ask user before scaling sink
-- `enabled: false` deletes the Deployment entirely — always use `replicaCount: 0` instead
+- Scale up **source only** after reset — always ask user before scaling sink
