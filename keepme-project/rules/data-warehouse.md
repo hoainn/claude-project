@@ -45,3 +45,17 @@
 
 ## SQL file
 - Do NOT update `keepme-infra/deployments/keepme-datawarehouse/redshift/dev_external_tables.sql` — this step is skipped
+
+## Debezium offset rewrite — CRITICAL
+When rewriting a connector offset key, always inspect the stored offset **value** first:
+- If value contains `"initsync":true` → **STOP immediately**, flag to user — this is a snapshot-phase token
+  - Proceeding will cause Debezium to trigger a full re-snapshot → duplicate data in S3/Parquet
+  - Ask user: re-snapshot intentionally, or replace value with a valid streaming-phase resume_token?
+- If value has `sec`/`ord`/`resume_token` with NO `initsync` → safe to rewrite key only, preserve value
+- Always add `snapshot.mode: "never"` to connector config as a safeguard against accidental re-snapshots
+
+## Duplicate data in Parquet (S3)
+- Re-snapshots append new Parquet files alongside old ones — S3 sink never overwrites
+- Fix options:
+  1. Deduplicate in Redshift view: `ROW_NUMBER() OVER (PARTITION BY _id ORDER BY __ts_ms DESC NULLS LAST)`
+  2. Clear S3 prefix + reset sink to re-process topic from offset 0 (clean but destructive)

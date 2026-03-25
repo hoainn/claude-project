@@ -14,6 +14,8 @@
 - Redshift Serverless: workgroup `dev`, region `eu-west-2`, namespace `antares-data-warehouse`
 - IAM role for Redshift: `arn:aws:iam::760505282981:role/service-role/AmazonRedshift-CommandsAccessRole-20260321T132138`
 - IAM role for Kafka sink (S3 write): `arn:aws:iam::760505282981:role/kafka-connector-sink`
+- IAM role for Glue partition registrar: `arn:aws:iam::760505282981:role/glue-partition-registrar`
+- EKS OIDC ID: `25939227D26F5E218023EC444E7FDBA0` (eu-west-2, cluster `keepme-eu-west-2`)
 - Developer schema definitions: `/Users/hoainn/Documents/Project/KeepMe/Kafka_schema/<collection>.json`
 
 ## Kafka Admin (in K8s)
@@ -75,6 +77,13 @@ ignoreDifferences:
 ```
 
 Applied to: `prod/data-warehouse/kafka/app.yaml`
+
+## Glue Partition Registrar
+- CronJob `glue-partition-registrar` runs hourly in `data-warehouse-prod`
+- Auto-discovers S3 partitions and registers missing ones in Glue for all tables in `cdc_keepme_production`
+- ArgoCD app: `prod-dw-glue-partition-registrar`
+- Script stored in ConfigMap `glue-partition-registrar-script`
+- Uses IRSA via ServiceAccount `glue-partition-registrar`
 
 ## Raw Kubernetes manifest apps (ArgoCD)
 For CronJobs/raw manifests, use single-source app with `path:` and `kustomization.yaml`:

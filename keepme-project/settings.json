@@ -23,6 +23,12 @@
       "Bash(git diff:*)",
       "Bash(git add:*)",
       "Bash(git pull:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(kubectl annotate:*)",
+      "Bash(kubectl rollout:*)",
+      "Bash(aws logs:*)",
+      "Bash(aws cloudwatch:*)",
       "Bash(npm run:*)",
       "Bash(docker-compose:*)",
       "Bash(docker compose:*)"
